@@ -1,6 +1,7 @@
 <html>
+<head>
+    <meta http-equiv="refresh" content="0;URL=http://localhost:8080/people" />
+</head>
 <body>
-<h2>Hello World!</h2>
-<a href="/people">Web</a>
 </body>
 </html>

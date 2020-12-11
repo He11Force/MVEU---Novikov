@@ -11,19 +11,62 @@
 <body>
 
 <center>
-    <p th:text="${person.getName() + ',   age: ' + person.getAge()}">VALUE</p>
-    <p th:text="${'Email: ' + person.getEmail()}">VALUE</p>
-    <p th:text="${'User id: ' + person.getId()}">VALUE</p>
-    <p th:text="${'Vocation: ' + person.getVocation()}">VALUE</p>
-
-
-    <a th:href="@{/people/{id}/edit(id=${person.getId()})}">Edit</a>
-
-    <a href="/people">Back</a>
-
-    <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
-        <input type="submit" color="red" value="Delete"/>
-    </form>
+    <br/>
+    <table>
+        <tr>
+            <td>
+                <p>Person Name: </p>
+            </td>
+            <td>
+                <p th:text="${person.getName()}">VALUE</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Age: </p>
+            </td>
+            <td>
+                <p th:text="${person.getAge()}">VALUE</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Email: </p>
+            </td>
+            <td>
+                <p th:text="${person.getEmail()}">VALUE</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>User ID: </p>
+            </td>
+            <td>
+                <p th:text="${person.getId()}">VALUE</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Vocation: </p>
+            </td>
+            <td>
+                <p th:text="${person.getVocation()}">VALUE</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/people">Back</a>
+            </td>
+            <td>
+                <a th:href="@{/people/{id}/edit(id=${person.getId()})}">Edit</a>
+            </td>
+            <td>
+                <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
+                    <input type="submit" color="red" value="Delete"/>
+                </form>
+            </td>
+        </tr>
+    </table>
 </center>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

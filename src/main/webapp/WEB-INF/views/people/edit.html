@@ -10,28 +10,86 @@
 </head>
 <body>
 
+<form th:method="PATCH" th:action="@{/people/{id}(id=${person.getId()})}" th:object="${person}">
 <center>
-    <form th:method="PATCH" th:action="@{/people/{id}(id=${person.getId()})}" th:object="${person}">
-        <label for="name">Enter name: </label>
-        <input type="text" th:field="*{name}" id="name"/>
-        <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+    <table>
         <br/>
-        <label for="age">Enter age: </label>
-        <input type="text" th:field="*{age}" id="age"/>
-        <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
-        <br/>
-        <label for="email">Enter email: </label>
-        <input type="text" th:field="*{email}" id="email"/>
-        <div style="color:#ff0000" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
-        <br/>
-        <label for="vocation">Enter vocation: </label>
-        <input type="text" th:field="*{vocation}" id="vocation"/>
-        <div style="color:#ff0000" th:if="${#fields.hasErrors('vocation')}" th:errors="*{vocation}">Vocation Error</div>
-        <br/>
-        <a href="/people">Back</a>
-        <input type="submit" value="Update!"/>
-    </form>
+            <tr>
+                <td>
+                    <label for="name">Enter name: </label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{name}" id="name"/>
+                </td>
+            </tr>
+        <tr>
+            <td>
+
+            </td>
+            <td>
+                <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+            </td>
+        </tr>
+            <tr>
+                <td>
+                    <label for="age">Enter age: </label>
+                </td>
+                <td>
+                    <input type="number" th:field="*{age}" id="age"/>
+                </td>
+            </tr>
+        <tr>
+            <td>
+
+            </td>
+            <td>
+                <div style="color:red" th:if="${#fields.hasErrors('age')}">Age should be greater than 0 or empty</div>
+            </td>
+        </tr>
+            <tr>
+                <td>
+                    <label for="email">Enter email: </label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{email}" id="email"/>
+                </td>
+            </tr>
+        <tr>
+            <td>
+
+            </td>
+            <td>
+                <div style="color:#ff0000" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
+            </td>
+        </tr>
+            <tr>
+                <td>
+                    <label for="vocation">Enter vocation: </label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{vocation}" id="vocation"/>
+                </td>
+            </tr>
+        <tr>
+            <td>
+
+            </td>
+            <td>
+                <div style="color:#ff0000" th:if="${#fields.hasErrors('vocation')}" th:errors="*{vocation}">Vocation Error</div>
+            </td>
+        </tr>
+            <br/>
+            <tr>
+                <td>
+                    <a href="/people">Back</a>
+                </td>
+                <td>
+                    <input type="submit" value="Update!"/>
+                </td>
+            </tr>
+    </table>
 </center>
+</form>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
