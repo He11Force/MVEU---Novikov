@@ -34,7 +34,7 @@
                 <label for="age">Enter age: </label>
             </td>
             <td>
-                <input type="text" th:field="*{age}" id="age"/>
+                <input type="number" th:field="*{age}" id="age"/>
             </td>
         </tr>
         <tr>
@@ -42,7 +42,7 @@
 
             </td>
             <td>
-                <div style="color:red" th:if="${#fields.hasErrors('age')}">Age should be greater than 0 or empty</div>
+                <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</div>
             </td>
         </tr>
         <tr>

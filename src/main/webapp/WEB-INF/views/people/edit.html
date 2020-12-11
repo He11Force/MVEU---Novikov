@@ -43,7 +43,7 @@
 
             </td>
             <td>
-                <div style="color:red" th:if="${#fields.hasErrors('age')}">Age should be greater than 0 or empty</div>
+                <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</div>
             </td>
         </tr>
             <tr>
