@@ -32,7 +32,7 @@ public class SimpleCalculator {
             if(expression.charAt(i) == 's'){
                 positionDelete = i;
                 StringBuffer sb = new StringBuffer();
-                for (int j = i+1; expression.charAt(j) != '+' && expression.charAt(j) != '-'  && expression.charAt(j) != '*' && expression.charAt(j) != '/' && expression.charAt(j) != ' '; j++){
+                for (int j = i+1; expression.charAt(j) != '+' && expression.charAt(j) != '-'  && expression.charAt(j) != '*' && expression.charAt(j) != '/' && expression.charAt(j) != ' ' && j+1 != expression.length(); j++){
                     sb.append(expression.charAt(j));
                     System.out.println("deatach ++" + j + " - i,j - " + i + " ,expr - " + expression.charAt(j));
                 }
