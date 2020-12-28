@@ -9,11 +9,15 @@ import java.util.Stack;
 
 public class SimpleCalculator {
     public static double result;
+    public static int positionDelete = 0;
+    public static String expression;
+    public static String tempNumber;
+    public static String tempExpression;
 
     public static void main(String a[]) {
         Scanner in = new Scanner(System.in);
         System.out.print("Input: ");
-        String expression = in.nextLine();
+        expression = in.nextLine();
         //String expression = "-(2+2)";
         result = new SimpleCalculator().decide(expression);
 
@@ -24,31 +28,21 @@ public class SimpleCalculator {
         System.out.println("Result: "+ formattedDouble);
         System.out.println("Full result: "+ result);
 
-        /*try(FileInputStream fin=new FileInputStream("C://Diers//notes.txt")) {
-            int i=-1;
-            while((i=fin.read())!=-1){
-                System.out.print((char)i);
+
+        for (int i = 0;i < expression.length(); i++){
+            if(expression.charAt(i) == 's'){
+                positionDelete = i;
+                StringBuffer sb = new StringBuffer();
+                for (int j = i+1; (expression.charAt(j) != '+' || expression.charAt(j) != '-'  || expression.charAt(j) != '*' || expression.charAt(j) != '/' || expression.charAt(j) != ' ') ; j++){
+                    sb.append(expression.charAt(j));
+                }
+                tempNumber = sb.toString();
+                System.out.println(Math.sin(Math.toRadians(Double.parseDouble(tempNumber)))+"DEGRED");
             }
+            expression = removeCharAt(expression, positionDelete);
+            // removeCharAt(expression, positionDelete)
         }
-        catch(IOException ex){
-            System.out.println(ex.getMessage());
-        }*/
-
-        try(FileOutputStream fos=new FileOutputStream("C://notes.txt")) {
-            byte[] buffer = expression.getBytes();
-            fos.write(buffer, 0, buffer.length);
-            byte[] buffer3 = formattedDouble.getBytes();
-            fos.write(buffer3, 0, buffer.length);
-        }
-        catch(IOException ex){
-            System.out.println(ex.getMessage());
-        }
-
     }
-
-
-
-
 
     public double decide (String expression) {
         String prerared = preparingExpression(expression);
@@ -64,11 +58,17 @@ public class SimpleCalculator {
             if (symbol == '-') {
                 if (token == 0) preparingExpression+='0';
                 else if(expression.charAt(token-1) == '(') preparingExpression+='0';
+            } else if (symbol == 's') {
+                Math.sin(Math.toRadians(expression.charAt(token+1)));
+                expression = expression.replace("\\w", "");
             }
             preparingExpression+=symbol;
         }
-
         return preparingExpression;
+    }
+
+    public static String removeCharAt(String s, int pos) {
+        return s.substring(0, pos) + s.substring(pos + 1);
     }
 
     private String expressionToRPN (String expression) {
@@ -100,12 +100,14 @@ public class SimpleCalculator {
                 }
                 stack.pop();
             }
+            System.out.println(current + "                                    Debug");
         }
         //
         while (!stack.empty()) {
             current+= stack.pop();
         }
         return current;
+
     }
 
     private double rpnToAnswer (String rpn) {
@@ -130,14 +132,12 @@ public class SimpleCalculator {
                 if (rpn.charAt(i) == '*' || rpn.charAt(i) == 'x')stack.push(b*a);
                 if (rpn.charAt(i) == '/')stack.push(b/a);
 
-                if (rpn.charAt(i) == 's')stack.push(Math.sin(Math.toRadians(a)));
             }
         }
         return stack.pop();
     }
 
     private int getPriority (char token) {
-        if (token == 's' || token == 'c' || token == 't') return 4;
         if (token == '*' ||  token == 'x' || token == '/') return 3;
         if (token == '+' || token == '-') return 2;
         if (token == '(') return 1;
