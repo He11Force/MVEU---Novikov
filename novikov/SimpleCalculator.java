@@ -1,9 +1,5 @@
 package ru.novikov;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -18,30 +14,37 @@ public class SimpleCalculator {
         Scanner in = new Scanner(System.in);
         System.out.print("Input: ");
         expression = in.nextLine();
-        //String expression = "-(2+2)";
+        deattachingChars();
         result = new SimpleCalculator().decide(expression);
-
+        //Получение данных с класса RoundedCalculator
         RoundedCalculator roundedcalculator = new RoundedCalculator();
-        String formattedDouble = null;
+        String formattedDouble;
         formattedDouble = roundedcalculator.sendformatteddouble();
-
+        // Вывод
         System.out.println("Result: "+ formattedDouble);
         System.out.println("Full result: "+ result);
 
 
+
+    }
+    public static void deattachingChars() {
         for (int i = 0;i < expression.length(); i++){
             if(expression.charAt(i) == 's'){
                 positionDelete = i;
                 StringBuffer sb = new StringBuffer();
-                for (int j = i+1; (expression.charAt(j) != '+' || expression.charAt(j) != '-'  || expression.charAt(j) != '*' || expression.charAt(j) != '/' || expression.charAt(j) != ' ') ; j++){
+                for (int j = i+1; expression.charAt(j) != '+' && expression.charAt(j) != '-'  && expression.charAt(j) != '*' && expression.charAt(j) != '/' && expression.charAt(j) != ' '; j++){
                     sb.append(expression.charAt(j));
+                    System.out.println("deatach ++" + j + " - i,j - " + i + " ,expr - " + expression.charAt(j));
                 }
                 tempNumber = sb.toString();
-                System.out.println(Math.sin(Math.toRadians(Double.parseDouble(tempNumber)))+"DEGRED");
+                System.out.println(Math.sin(Math.toRadians(Double.parseDouble(tempNumber))));
             }
-            expression = removeCharAt(expression, positionDelete);
-            // removeCharAt(expression, positionDelete)
         }
+        System.out.println(removeCharAt(expression, positionDelete));
+    }
+
+    public static String removeCharAt(String s, int pos) {
+        return s.substring(0, pos) + s.substring(pos + 1);
     }
 
     public double decide (String expression) {
@@ -58,17 +61,10 @@ public class SimpleCalculator {
             if (symbol == '-') {
                 if (token == 0) preparingExpression+='0';
                 else if(expression.charAt(token-1) == '(') preparingExpression+='0';
-            } else if (symbol == 's') {
-                Math.sin(Math.toRadians(expression.charAt(token+1)));
-                expression = expression.replace("\\w", "");
             }
             preparingExpression+=symbol;
         }
         return preparingExpression;
-    }
-
-    public static String removeCharAt(String s, int pos) {
-        return s.substring(0, pos) + s.substring(pos + 1);
     }
 
     private String expressionToRPN (String expression) {
