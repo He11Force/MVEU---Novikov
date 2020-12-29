@@ -9,12 +9,30 @@ public class SimpleCalculator {
     public static String expression;
     public static String tempNumber;
     public static String tempExpression;
+    public static String position;
+    public static int positionInt;
+    public static int minpos = 99;
+    public static int maxpos = 0;
+    public static double sin = 10;
+    public static double cos = 10;
+    public static double tan = 10;
 
     public static void main(String a[]) {
-        Scanner in = new Scanner(System.in);
-        System.out.print("Input: ");
-        expression = in.nextLine();
-        deattachingChars();
+        System.out.println("Simple calculator: 1");
+        System.out.println("With sin/cos/tg: 2");
+        System.out.println("Choise calculator:");
+        Scanner calc = new Scanner(System.in);
+        int calctype = Integer.parseInt(calc.nextLine());
+        if(calctype == 2){
+            Scanner in = new Scanner(System.in);
+            System.out.print("Input var follow by number(+-*/)s/c/t(number)(+-*/)number: ");
+            expression = in.nextLine();
+            deattachingChars();
+        }else{
+            Scanner in = new Scanner(System.in);
+            System.out.print("Input var: ");
+            expression = in.nextLine();
+        }
         result = new SimpleCalculator().decide(expression);
         //Получение данных с класса RoundedCalculator
         RoundedCalculator roundedcalculator = new RoundedCalculator();
@@ -28,19 +46,156 @@ public class SimpleCalculator {
 
     }
     public static void deattachingChars() {
-        for (int i = 0;i < expression.length(); i++){
-            if(expression.charAt(i) == 's'){
+        System.out.println(expression);
+        for (int i = 0; i < expression.length(); i++) {
+            if (expression.charAt(i) == 's') {
                 positionDelete = i;
                 StringBuffer sb = new StringBuffer();
-                for (int j = i+1; expression.charAt(j) != '+' && expression.charAt(j) != '-'  && expression.charAt(j) != '*' && expression.charAt(j) != '/' && expression.charAt(j) != ' ' && j+1 != expression.length(); j++){
+                StringBuffer pos = new StringBuffer();
+
+                for (int j = i + 1; expression.charAt(j) != '+' && expression.charAt(j) != '-' && expression.charAt(j) != '*' && expression.charAt(j) != '/'; j++) {
                     sb.append(expression.charAt(j));
-                    System.out.println("deatach ++" + j + " - i,j - " + i + " ,expr - " + expression.charAt(j));
+                    pos.append(j-1);
                 }
+
+                position = pos.toString();
+                positionInt = Integer.parseInt(position);
                 tempNumber = sb.toString();
-                System.out.println(Math.sin(Math.toRadians(Double.parseDouble(tempNumber))));
+                sin = Math.sin(Math.toRadians(Double.parseDouble(tempNumber)));
+                System.out.println(sin);
+                System.out.println(expression + " behind");
+                expression = expression.replace("s", "");
+            }else if (expression.charAt(i) == 'c') {
+                positionDelete = i;
+                StringBuffer sb = new StringBuffer();
+                StringBuffer pos = new StringBuffer();
+
+                for (int j = i + 1; expression.charAt(j) != '+' && expression.charAt(j) != '-' && expression.charAt(j) != '*' && expression.charAt(j) != '/'; j++) {
+                    sb.append(expression.charAt(j));
+                    pos.append(j-1);
+                }
+
+                position = pos.toString();
+                positionInt = Integer.parseInt(position);
+                tempNumber = sb.toString();
+                System.out.println(tempNumber);
+                if(tempNumber.equals("90")){
+                    cos = 0;
+                }else{
+                    cos = Math.cos(Math.toRadians(Double.parseDouble(tempNumber)));
+                }
+                System.out.println(cos);
+                System.out.println(expression + " behind");
+                expression = expression.replace("c", "");
+            }else if (expression.charAt(i) == 't') {
+                positionDelete = i;
+                StringBuffer sb = new StringBuffer();
+                StringBuffer pos = new StringBuffer();
+
+                for (int j = i + 1; expression.charAt(j) != '+' && expression.charAt(j) != '-' && expression.charAt(j) != '*' && expression.charAt(j) != '/'; j++) {
+                    sb.append(expression.charAt(j));
+                    pos.append(j-1);
+                }
+
+                position = pos.toString();
+                positionInt = Integer.parseInt(position);
+                tempNumber = sb.toString();
+                tan = Math.tan(Math.toRadians(Double.parseDouble(tempNumber)));
+                System.out.println(tan);
+                System.out.println(expression + " behind");
+                expression = expression.replace("t", "");
+            }
+
+
+
+
+        }
+        // - es
+        System.out.println(expression + " after");
+        System.out.println(position + " position");
+
+
+        for (int j = 0; j < position.length(); j++ ) {
+            if(minpos > position.charAt(j)){
+                switch (position.charAt(j)) {
+                    case 48 -> minpos = 0;
+                    case 49 -> minpos = 1;
+                    case 50 -> minpos = 2;
+                    case 51 -> minpos = 3;
+                    case 52 -> minpos = 4;
+                    case 53 -> minpos = 5;
+                    case 54 -> minpos = 6;
+                    case 55 -> minpos = 7;
+                    case 56 -> minpos = 8;
+                    case 57 -> minpos = 9;
+                }
+            } else if(maxpos < position.charAt(j)){
+                switch (position.charAt(j)) {
+                    case 48 -> maxpos = 0;
+                    case 49 -> maxpos = 1;
+                    case 50 -> maxpos = 2;
+                    case 51 -> maxpos = 3;
+                    case 52 -> maxpos = 4;
+                    case 53 -> maxpos = 5;
+                    case 54 -> maxpos = 6;
+                    case 55 -> maxpos = 7;
+                    case 56 -> maxpos = 8;
+                    case 57 -> maxpos = 9;
+                }
             }
         }
-        System.out.println(removeCharAt(expression, positionDelete));
+        StringBuffer stringBuffer = new StringBuffer(expression);
+        stringBuffer.delete(minpos,maxpos+1);
+        expression = stringBuffer.toString();
+        System.out.println(minpos +" "+ maxpos + "min, max");
+        System.out.println(expression + " after delete");
+
+        //setter cos
+
+        StringBuffer last = new StringBuffer(expression);
+        if(sin != 10) {
+            for (int i = 0; i < expression.length(); i++){
+                if((expression.charAt(i) == '+' && expression.charAt(i+1) == '+')||(expression.charAt(i) == '+' && expression.charAt(i+1) == '-')
+                        ||(expression.charAt(i) == '-' && expression.charAt(i+1) == '+')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '-')
+                        ||(expression.charAt(i) == '*' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '*' && expression.charAt(i+1) == '/')
+                        ||(expression.charAt(i) == '/' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '/' && expression.charAt(i+1) == '/')
+                        ||(expression.charAt(i) == '+' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '*')
+                        ||(expression.charAt(i) == '*' && expression.charAt(i+1) == '-')||(expression.charAt(i) == '*' && expression.charAt(i+1) == '+')
+                        ||(expression.charAt(i) == '+' && expression.charAt(i+1) == '/')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '/')
+                        ||(expression.charAt(i) == '/' && expression.charAt(i+1) == '-')||(expression.charAt(i) == '/' && expression.charAt(i+1) == '+')){
+                    last.insert(i+1,sin);
+                }
+            }
+        }else if(cos != 10){
+            for (int i = 0; i < expression.length(); i++){
+                if((expression.charAt(i) == '+' && expression.charAt(i+1) == '+')||(expression.charAt(i) == '+' && expression.charAt(i+1) == '-')
+                        ||(expression.charAt(i) == '-' && expression.charAt(i+1) == '+')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '-')
+                        ||(expression.charAt(i) == '*' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '*' && expression.charAt(i+1) == '/')
+                        ||(expression.charAt(i) == '/' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '/' && expression.charAt(i+1) == '/')
+                        ||(expression.charAt(i) == '+' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '*')
+                        ||(expression.charAt(i) == '*' && expression.charAt(i+1) == '-')||(expression.charAt(i) == '*' && expression.charAt(i+1) == '+')
+                        ||(expression.charAt(i) == '+' && expression.charAt(i+1) == '/')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '/')
+                        ||(expression.charAt(i) == '/' && expression.charAt(i+1) == '-')||(expression.charAt(i) == '/' && expression.charAt(i+1) == '+')){
+                    last.insert(i+1,cos);
+                }
+            }
+        }else if(tan != 10) {
+            for (int i = 0; i < expression.length(); i++){
+                if((expression.charAt(i) == '+' && expression.charAt(i+1) == '+')||(expression.charAt(i) == '+' && expression.charAt(i+1) == '-')
+                        ||(expression.charAt(i) == '-' && expression.charAt(i+1) == '+')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '-')
+                        ||(expression.charAt(i) == '*' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '*' && expression.charAt(i+1) == '/')
+                        ||(expression.charAt(i) == '/' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '/' && expression.charAt(i+1) == '/')
+                        ||(expression.charAt(i) == '+' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '*')
+                        ||(expression.charAt(i) == '*' && expression.charAt(i+1) == '-')||(expression.charAt(i) == '*' && expression.charAt(i+1) == '+')
+                        ||(expression.charAt(i) == '+' && expression.charAt(i+1) == '/')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '/')
+                        ||(expression.charAt(i) == '/' && expression.charAt(i+1) == '-')||(expression.charAt(i) == '/' && expression.charAt(i+1) == '+')){
+                    last.insert(i+1,tan);
+                }
+            }
+        }
+
+        expression = last.toString();
+        System.out.println(expression + " LAST");
     }
 
     public static String removeCharAt(String s, int pos) {
@@ -125,7 +280,7 @@ public class SimpleCalculator {
                 double a = stack.pop(), b = stack.pop();
                 if (rpn.charAt(i) == '+')stack.push(b+a);
                 if (rpn.charAt(i) == '-')stack.push(b-a);
-                if (rpn.charAt(i) == '*' || rpn.charAt(i) == 'x')stack.push(b*a);
+                if (rpn.charAt(i) == '*')stack.push(b*a);
                 if (rpn.charAt(i) == '/')stack.push(b/a);
 
             }
@@ -134,7 +289,7 @@ public class SimpleCalculator {
     }
 
     private int getPriority (char token) {
-        if (token == '*' ||  token == 'x' || token == '/') return 3;
+        if (token == '*' || token == '/') return 3;
         if (token == '+' || token == '-') return 2;
         if (token == '(') return 1;
         if (token == ')') return -1;
