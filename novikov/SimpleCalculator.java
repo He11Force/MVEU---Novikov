@@ -1,5 +1,6 @@
 package ru.novikov;
 
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -8,7 +9,6 @@ public class SimpleCalculator {
     public static int positionDelete = 0;
     public static String expression;
     public static String tempNumber;
-    public static String tempExpression;
     public static String position;
     public static int positionInt;
     public static int minpos = 99;
@@ -18,6 +18,7 @@ public class SimpleCalculator {
     public static double tan = 10;
 
     public static void main(String a[]) {
+        HashMap<String,Integer> cache = new HashMap<String,Integer>();
         System.out.println("Simple calculator: 1");
         System.out.println("With sin/cos/tg: 2");
         System.out.println("Choise calculator:");
@@ -43,8 +44,8 @@ public class SimpleCalculator {
         System.out.println("Full result: "+ result);
 
 
-
     }
+    //
     public static void deattachingChars() {
         System.out.println(expression);
         for (int i = 0; i < expression.length(); i++) {
@@ -62,8 +63,8 @@ public class SimpleCalculator {
                 positionInt = Integer.parseInt(position);
                 tempNumber = sb.toString();
                 sin = Math.sin(Math.toRadians(Double.parseDouble(tempNumber)));
-                System.out.println(sin);
-                System.out.println(expression + " behind");
+                //System.out.println(sin);
+                //System.out.println(expression + " behind");
                 expression = expression.replace("s", "");
             }else if (expression.charAt(i) == 'c') {
                 positionDelete = i;
@@ -78,14 +79,14 @@ public class SimpleCalculator {
                 position = pos.toString();
                 positionInt = Integer.parseInt(position);
                 tempNumber = sb.toString();
-                System.out.println(tempNumber);
+                //System.out.println(tempNumber);
                 if(tempNumber.equals("90")){
                     cos = 0;
                 }else{
                     cos = Math.cos(Math.toRadians(Double.parseDouble(tempNumber)));
                 }
-                System.out.println(cos);
-                System.out.println(expression + " behind");
+                //System.out.println(cos);
+                //System.out.println(expression + " behind");
                 expression = expression.replace("c", "");
             }else if (expression.charAt(i) == 't') {
                 positionDelete = i;
@@ -101,8 +102,8 @@ public class SimpleCalculator {
                 positionInt = Integer.parseInt(position);
                 tempNumber = sb.toString();
                 tan = Math.tan(Math.toRadians(Double.parseDouble(tempNumber)));
-                System.out.println(tan);
-                System.out.println(expression + " behind");
+                //System.out.println(tan);
+                //System.out.println(expression + " deleting char s/c/t");
                 expression = expression.replace("t", "");
             }
 
@@ -111,8 +112,8 @@ public class SimpleCalculator {
 
         }
         // - es
-        System.out.println(expression + " after");
-        System.out.println(position + " position");
+        //System.out.println(expression + " after delete char s/c/t");
+        //System.out.println(position + " position of numbers s/c/t in string");
 
 
         for (int j = 0; j < position.length(); j++ ) {
@@ -144,16 +145,23 @@ public class SimpleCalculator {
                 }
             }
         }
+
         StringBuffer stringBuffer = new StringBuffer(expression);
-        stringBuffer.delete(minpos,maxpos+1);
+        if(cos<0){
+            stringBuffer.delete(minpos,maxpos+1);
+            //stringBuffer.delete(minpos-1,maxpos+1);
+            //stringBuffer.insert(minpos-1,'-');
+            //cos = Math.abs(cos);
+        }else{
+            stringBuffer.delete(minpos,maxpos+1);
+        }
         expression = stringBuffer.toString();
-        System.out.println(minpos +" "+ maxpos + "min, max");
-        System.out.println(expression + " after delete");
+        //System.out.println(minpos +" "+ maxpos + "min, max position of number s/c/t ");
+        //System.out.println(expression + " after delete s/c/t number");
 
         //setter cos
 
         StringBuffer last = new StringBuffer(expression);
-        if(sin != 10) {
             for (int i = 0; i < expression.length(); i++){
                 if((expression.charAt(i) == '+' && expression.charAt(i+1) == '+')||(expression.charAt(i) == '+' && expression.charAt(i+1) == '-')
                         ||(expression.charAt(i) == '-' && expression.charAt(i+1) == '+')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '-')
@@ -163,39 +171,26 @@ public class SimpleCalculator {
                         ||(expression.charAt(i) == '*' && expression.charAt(i+1) == '-')||(expression.charAt(i) == '*' && expression.charAt(i+1) == '+')
                         ||(expression.charAt(i) == '+' && expression.charAt(i+1) == '/')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '/')
                         ||(expression.charAt(i) == '/' && expression.charAt(i+1) == '-')||(expression.charAt(i) == '/' && expression.charAt(i+1) == '+')){
-                    last.insert(i+1,sin);
+                    if(sin != 10) {
+                        last.insert(i+1, '(');
+                        last.insert(i+2, ')');
+                        last.insert(i+2,sin);
+                    }else if(cos != 10){
+                        last.insert(i+1, '(');
+                        last.insert(i+2, ')');
+                        last.insert(i+2,cos);
+                    }else if(tan != 10) {
+                        last.insert(i+1, '(');
+                        last.insert(i+2, ')');
+                        last.insert(i+2,tan);
+                    }
+
                 }
             }
-        }else if(cos != 10){
-            for (int i = 0; i < expression.length(); i++){
-                if((expression.charAt(i) == '+' && expression.charAt(i+1) == '+')||(expression.charAt(i) == '+' && expression.charAt(i+1) == '-')
-                        ||(expression.charAt(i) == '-' && expression.charAt(i+1) == '+')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '-')
-                        ||(expression.charAt(i) == '*' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '*' && expression.charAt(i+1) == '/')
-                        ||(expression.charAt(i) == '/' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '/' && expression.charAt(i+1) == '/')
-                        ||(expression.charAt(i) == '+' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '*')
-                        ||(expression.charAt(i) == '*' && expression.charAt(i+1) == '-')||(expression.charAt(i) == '*' && expression.charAt(i+1) == '+')
-                        ||(expression.charAt(i) == '+' && expression.charAt(i+1) == '/')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '/')
-                        ||(expression.charAt(i) == '/' && expression.charAt(i+1) == '-')||(expression.charAt(i) == '/' && expression.charAt(i+1) == '+')){
-                    last.insert(i+1,cos);
-                }
-            }
-        }else if(tan != 10) {
-            for (int i = 0; i < expression.length(); i++){
-                if((expression.charAt(i) == '+' && expression.charAt(i+1) == '+')||(expression.charAt(i) == '+' && expression.charAt(i+1) == '-')
-                        ||(expression.charAt(i) == '-' && expression.charAt(i+1) == '+')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '-')
-                        ||(expression.charAt(i) == '*' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '*' && expression.charAt(i+1) == '/')
-                        ||(expression.charAt(i) == '/' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '/' && expression.charAt(i+1) == '/')
-                        ||(expression.charAt(i) == '+' && expression.charAt(i+1) == '*')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '*')
-                        ||(expression.charAt(i) == '*' && expression.charAt(i+1) == '-')||(expression.charAt(i) == '*' && expression.charAt(i+1) == '+')
-                        ||(expression.charAt(i) == '+' && expression.charAt(i+1) == '/')||(expression.charAt(i) == '-' && expression.charAt(i+1) == '/')
-                        ||(expression.charAt(i) == '/' && expression.charAt(i+1) == '-')||(expression.charAt(i) == '/' && expression.charAt(i+1) == '+')){
-                    last.insert(i+1,tan);
-                }
-            }
-        }
+
 
         expression = last.toString();
-        System.out.println(expression + " LAST");
+        //System.out.println(expression + " Final string bulid");
     }
 
     public static String removeCharAt(String s, int pos) {
@@ -251,7 +246,7 @@ public class SimpleCalculator {
                 }
                 stack.pop();
             }
-            System.out.println(current + "                                    Debug");
+            //System.out.println(current + "                                    Debug");
         }
         //
         while (!stack.empty()) {
